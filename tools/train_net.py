@@ -141,6 +141,13 @@ def main(args):
     consider writing your own training loop (see plain_train_net.py) or
     subclassing the trainer.
     """
+    
+    from detectron2.data.datasets import register_coco_instances
+    from detectron2.data import MetadataCatalog
+    register_coco_instances("object_dataset", {}, "/data/annotation_coco.json", "/data/images")
+    MetadataCatalog.get("object_dataset").keypoint_names = ["object"]
+    MetadataCatalog.get("object_dataset").keypoint_flip_map = [('object', 'object')]
+    
     trainer = Trainer(cfg)
     trainer.resume_or_load(resume=args.resume)
     if cfg.TEST.AUG.ENABLED:
