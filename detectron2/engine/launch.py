@@ -6,10 +6,16 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 
 from detectron2.utils import comm
+from detectron2.data.datasets import register_coco_instances
+from detectron2.data import MetadataCatalog
 
 __all__ = ["DEFAULT_TIMEOUT", "launch"]
 
 DEFAULT_TIMEOUT = timedelta(minutes=30)
+
+register_coco_instances("blender_dataset", {}, "/data/annotation_coco.json", "/data")
+MetadataCatalog.get("blender_dataset").keypoint_names = ["object"]
+MetadataCatalog.get("blender_dataset").keypoint_flip_map  = [("object", "object")]
 
 
 def _find_free_port():
