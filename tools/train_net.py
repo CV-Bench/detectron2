@@ -15,6 +15,12 @@ Therefore, we recommend you to use detectron2 as an library and take
 this file as an example of how to use the library.
 You may want to write your own script with your datasets and other customizations.
 """
+from detectron2.data.datasets import register_coco_instances
+from detectron2.data import MetadataCatalog
+
+register_coco_instances("blender_dataset", {}, "/data/annotation_coco.json", "/data")
+MetadataCatalog.get("blender_dataset").keypoint_names = ["object"]
+MetadataCatalog.get("blender_dataset").keypoint_flip_map  = [("object", "object")]
 
 import logging
 import os
